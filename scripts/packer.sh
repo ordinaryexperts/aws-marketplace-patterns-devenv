@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# https://stackoverflow.com/a/246128
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd /code
 
 if [ "$#" -ne 1 ]; then
     VERSION=`git describe`
@@ -11,7 +10,7 @@ else
 fi
 
 rm -f manifest.json
-VERSION=$VERSION packer build $DIR/../packer/ami.json
+VERSION=$VERSION packer build packer/ami.json
 
 supported_regions=(
     "ap-northeast-1"
@@ -51,3 +50,5 @@ if [[ "$IS_RELEASE" = true ]]; then
     echo -e "Copy the below code into jitsi_stack.py where indicated:\n"
     echo -e "$mapping_code"
 fi
+
+cd -
