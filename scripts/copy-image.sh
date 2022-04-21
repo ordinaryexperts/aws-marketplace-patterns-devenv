@@ -32,5 +32,5 @@ done
 mapping_code+="    \"us-east-1\": \"$AMI_ID\"\n"
 mapping_code+="}\n# End generated code block.\n\n"
 echo "All done copying image!"
-echo -e "Copy the below code into drupal_stack.py where indicated:\n"
+echo -e "Copy the below code into cdk stack where indicated:\n"
 echo -e "$mapping_code"
