@@ -2,8 +2,7 @@
 
 echo "$(date): Starting setup-env.sh"
 
-# this is also set in cdk/setup.py
-export CDK_VERSION=1.148.0
+export CDK_VERSION=2.20.0
 export PACKER_VERSION=1.5.5
 export TASKCAT_VERSION=0.9.29
 
