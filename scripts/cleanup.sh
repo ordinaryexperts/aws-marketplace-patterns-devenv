@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# https://stackoverflow.com/a/246128
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 TYPE="${1:-all}"
 PREFIX="${2:-user}"
 TEST_REGIONS="${3:-main}"
@@ -25,7 +22,7 @@ if [[ $TYPE == "all" || $TYPE == "buckets" ]]; then
     for bucket in $BUCKETS; do
         if [[ $bucket == $PREFIX_TO_DELETE* ]]; then
             echo $bucket
-            python3 $DIR/empty-and-delete-bucket.py $bucket
+            python3 /scripts/empty-and-delete-bucket.py $bucket
         fi
     done
     echo "done."
