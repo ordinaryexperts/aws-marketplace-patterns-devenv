@@ -1,5 +1,7 @@
 # Unreleased
 
+# 2.1.0
+
 * Upgrade taskcat to 0.9.31
 * Fix cleanup task to include empty-and-delete-bucket.py
 
