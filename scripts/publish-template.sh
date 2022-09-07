@@ -16,8 +16,8 @@ TEMPLATE_VERSION=$VERSION cdk synth \
     --asset-metadata false > /code/dist/template.yaml
 cd /code
 
-# TODO: parameterize name of pattern
+PATTERN=`ls cdk/*/*_stack.py | cut -d/ -f 2`
 aws s3 cp /code/dist/template.yaml \
-	s3://ordinary-experts-aws-marketplace-pattern-artifacts/wordpress/$VERSION/template.yaml \
+	s3://ordinary-experts-aws-marketplace-pattern-artifacts/$PATTERN/$VERSION/template.yaml \
 	--acl public-read
-echo "Copied to https://ordinary-experts-aws-marketplace-pattern-artifacts.s3.amazonaws.com/wordpress/$VERSION/template.yaml"
+echo "Copied to https://ordinary-experts-aws-marketplace-pattern-artifacts.s3.amazonaws.com/$PATTERN/$VERSION/template.yaml"
