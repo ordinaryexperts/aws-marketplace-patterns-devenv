@@ -1,5 +1,11 @@
 # Unreleased
 
+# 2.1.2
+
+* Upgrade CDK to 2.44.0
+* Upgrade Packer to 1.8.3
+* Upgrade taskcat to 0.9.32
+
 # 2.1.1
 
 * Fix hard-coded pattern name in publish-template.sh
