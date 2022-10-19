@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.1.3
+
+* Upgrade taskcat to 0.9.33
+
 # 2.1.2
 
 * Upgrade CDK to 2.44.0
