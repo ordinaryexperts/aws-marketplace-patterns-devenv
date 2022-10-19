@@ -4,7 +4,7 @@ echo "$(date): Starting setup-env.sh"
 
 export CDK_VERSION=2.44.0
 export PACKER_VERSION=1.8.3
-export TASKCAT_VERSION=0.9.32
+export TASKCAT_VERSION=0.9.33
 
 # system upgrades and tools
 export DEBIAN_FRONTEND=noninteractive
