@@ -99,7 +99,7 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
 src = 'plf.xlsx'
 now_dt = datetime.datetime.now()
 dst = f"plf-version-{VERSION.replace('.', '-')}--gen-{now_dt.strftime('%Y%m%d-%H%M%S')}.xlsx"
-SHEET_NAME = 'SSLSingleAMIAndCARWithContract'
+SHEET_NAME = 'SSLSingleAMIAndCAR'
 
 shutil.copyfile(src, dst)
 
