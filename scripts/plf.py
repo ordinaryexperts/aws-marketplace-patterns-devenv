@@ -83,6 +83,7 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
         ],
         MaxResults=100
     )
+    warned_regions = []
     for price in response['PriceList']:
         priceObj = json.loads(price)
         location = priceObj['product']['attributes']['location']
@@ -95,7 +96,9 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
                 highest_hourly_price = hourly_price
                 highest_hourly_region = location
         else:
-            print(f"WARNING: Could not find region '{location}' in allowed_regions...")
+            if location not in warned_regions:
+                print(f"WARNING: Could not find region '{location}' in allowed_regions...")
+                warned_regions.append(location)
     # print(f'Highest price for {instance_type} is ${highest_hourly_price} at {highest_hourly_region}')
     return highest_hourly_price
 
