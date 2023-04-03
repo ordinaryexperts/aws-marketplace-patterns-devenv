@@ -67,7 +67,10 @@ allowed_regions = list(template.get('Mappings', {}).get('AWSAMIRegionMap', {}).k
 # get rid of 'AMI' in beginning of list
 allowed_regions.pop(0)
 
+warned_regions = []
+
 def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
+    global warned_regions
     highest_hourly_price = 0
     highest_hourly_region = None
     response = pricing.get_products(
@@ -83,7 +86,6 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
         ],
         MaxResults=100
     )
-    warned_regions = []
     for price in response['PriceList']:
         priceObj = json.loads(price)
         location = priceObj['product']['attributes']['location']
