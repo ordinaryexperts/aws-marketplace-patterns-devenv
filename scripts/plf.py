@@ -59,12 +59,13 @@ plf_config = yaml.load(
     open('/code/plf_config.yaml'),
     Loader=yaml.SafeLoader
 )
-allowed_values = yaml.load(
-    open('/code/allowed_values.yaml'),
-    Loader=yaml.SafeLoader
-)
-allowed_instance_types = allowed_values['allowed_instance_types']
-allowed_regions = open('/code/supported_regions.txt').read().split('\n')
+template = yaml.load(
+    open('/code/dist/template.yaml'),
+    Loader=yaml.SafeLoader)
+allowed_instance_types =  template.get('Parameters', {}).get('AsgInstanceType', {}).get('AllowedValues', [])
+allowed_regions = list(template.get('Mappings', {}).get('AWSAMIRegionMap', {}).keys())
+# get rid of 'AMI' in beginning of list
+allowed_regions.pop(0)
 
 def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
     highest_hourly_price = 0
@@ -93,13 +94,15 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
             if hourly_price > highest_hourly_price:
                 highest_hourly_price = hourly_price
                 highest_hourly_region = location
+        else:
+            print(f"WARNING: Could not find region '{location}' in allowed_regions...")
     # print(f'Highest price for {instance_type} is ${highest_hourly_price} at {highest_hourly_region}')
     return highest_hourly_price
 
 src = 'plf.xlsx'
 now_dt = datetime.datetime.now()
 dst = f"plf-version-{VERSION.replace('.', '-')}--gen-{now_dt.strftime('%Y%m%d-%H%M%S')}.xlsx"
-SHEET_NAME = 'SSLSingleAMIAndCAR'
+SHEET_NAME = 'SSLSingleAMIAndCARWithContract'
 
 shutil.copyfile(src, dst)
 
@@ -124,11 +127,13 @@ for header in headers:
             if match_keyword in allowed_instance_types:
                 value = 'TRUE'
             else:
+                print(f"INFO: Instance type '{match_keyword}' not supported...")
                 value = ''
         else:
             if match_keyword in allowed_regions:
                 value = 'TRUE'
             else:
+                print(f"INFO:  Region '{match_keyword}' not supported...")
                 value = ''
 
     price_match = re.search(r'(.+) (Hourly|Annual) Price', column)
