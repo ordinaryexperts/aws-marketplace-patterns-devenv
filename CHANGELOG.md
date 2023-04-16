@@ -1,5 +1,7 @@
 # Unreleased
 
+* Upgrade node to 18.x
+
 # 2.1.4
 
 * Update plf sheet name to match latest spreadsheet template from AWS
