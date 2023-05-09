@@ -1,5 +1,7 @@
 # Unreleased
 
+# 2.2.0
+
 * Upgrade node to 18.x
 * Add scripts/differ.py
 * Fix lint make command
