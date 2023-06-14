@@ -1,5 +1,7 @@
 # Unreleased
 
+* region related enhancements to scripts
+
 # 2.2.0
 
 * Upgrade node to 18.x

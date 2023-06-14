@@ -12,23 +12,7 @@ fi
 rm -f manifest.json
 VERSION=$VERSION packer build packer/ami.json
 
-supported_regions=(
-    "ap-northeast-1"
-    "ap-northeast-2"
-    "ap-south-1"
-    "ap-southeast-1"
-    "ap-southeast-2"
-    "ca-central-1"
-    "eu-central-1"
-    "eu-north-1"
-    "eu-west-1"
-    "eu-west-2"
-    "eu-west-3"
-    "sa-east-1"
-    "us-east-2"
-    "us-west-1"
-    "us-west-2"
-)
+readarray -t supported_regions < /code/supported_regions.txt
 
 AMI_ID=`cat manifest.json | jq -r .builds[0].artifact_id |  cut -d':' -f2`
 AMI_NAME=`aws ec2 describe-images --image-ids $AMI_ID | jq -r '.Images[].Name'`
@@ -42,7 +26,9 @@ if [[ "$IS_RELEASE" = true ]]; then
     mapping_code+="generated_ami_ids = {\n"
     for i in ${!supported_regions[@]}; do
         region=${supported_regions[$i]}
-        mapping_code+="    \"$region\": \"ami-XXXXXXXXXXXXXXXXX\",\n"
+        if [[ "$region" != "us-east-1" ]]; then
+            mapping_code+="    \"$region\": \"ami-XXXXXXXXXXXXXXXXX\",\n"
+        fi
     done
     mapping_code+="    \"us-east-1\": \"$AMI_ID\"\n"
     mapping_code+="}\n# End generated code block.\n\n"
