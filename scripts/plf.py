@@ -25,7 +25,7 @@ VERSION=sys.argv[2]
 
 pricing = boto3.client('pricing', region_name=DEFAULT_REGION)
 
-regions = {
+all_regions = {
     'AWS GovCloud (US-East)'    :'us-gov-east-1',
     'AWS GovCloud (US-West)'    :'us-gov-west-1',
     'Africa (Cape Town)'        :'af-south-1',
@@ -85,7 +85,7 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
     for price in response['PriceList']:
         priceObj = json.loads(price)
         location = priceObj['product']['attributes']['location']
-        if location in regions and regions[location] in allowed_regions:
+        if location in all_regions and all_regions[location] in allowed_regions:
             termsKey = next(iter(priceObj['terms']['OnDemand']))
             priceDimensionsKey = next(iter(priceObj['terms']['OnDemand'][termsKey]['priceDimensions']))
             hourly_price = float(priceObj['terms']['OnDemand'][termsKey]['priceDimensions'][priceDimensionsKey]['pricePerUnit']['USD'])
