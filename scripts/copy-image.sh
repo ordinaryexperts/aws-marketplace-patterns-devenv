@@ -18,14 +18,16 @@ mapping_code+="generated_ami_ids = {\n"
 
 for i in ${!supported_regions[@]}; do
     region=${supported_regions[$i]}
-    echo -n "Checking $region..."
-    copied_ami_id=`AWS_REGION=$region aws ec2 describe-images --filters Name=name,Values=$AMI_NAME | jq -r '.Images[].ImageId'`
-    if [[ -z "${copied_ami_id}" ]]; then
-        echo -n "need to copy AMI..."
-        copied_ami_id=`AWS_REGION=$region aws ec2 copy-image --name $AMI_NAME --source-image-id $AMI_ID --source-region us-east-1 | jq -r '.ImageId'`
-        echo "done."
-    else
-        echo "AMI already copied."
+    if [[ "$region" != "us-east-1" ]]; then
+        echo -n "Checking $region..."
+        copied_ami_id=`AWS_REGION=$region aws ec2 describe-images --filters Name=name,Values=$AMI_NAME | jq -r '.Images[].ImageId'`
+        if [[ -z "${copied_ami_id}" ]]; then
+            echo -n "need to copy AMI..."
+            copied_ami_id=`AWS_REGION=$region aws ec2 copy-image --name $AMI_NAME --source-image-id $AMI_ID --source-region us-east-1 | jq -r '.ImageId'`
+            echo "done."
+        else
+            echo "AMI already copied."
+        fi
     fi
     mapping_code+="    \"$region\": \"$copied_ami_id\",\n"
 done

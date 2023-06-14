@@ -26,7 +26,9 @@ if [[ "$IS_RELEASE" = true ]]; then
     mapping_code+="generated_ami_ids = {\n"
     for i in ${!supported_regions[@]}; do
         region=${supported_regions[$i]}
-        mapping_code+="    \"$region\": \"ami-XXXXXXXXXXXXXXXXX\",\n"
+        if [[ "$region" != "us-east-1" ]]; then
+            mapping_code+="    \"$region\": \"ami-XXXXXXXXXXXXXXXXX\",\n"
+        fi
     done
     mapping_code+="    \"us-east-1\": \"$AMI_ID\"\n"
     mapping_code+="}\n# End generated code block.\n\n"
