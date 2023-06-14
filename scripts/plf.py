@@ -14,8 +14,8 @@ import yaml
 
 from oe_patterns_cdk_common.asg import Asg
 
-if len(sys.argv) != 4:
-    raise Exception('Usage: python3 plf.py [AMI_ID] [TEMPLATE_VERSION] [USE_GRAVITON(true|false)]')
+if len(sys.argv) != 3:
+    raise Exception('Usage: python3 plf.py [AMI_ID] [TEMPLATE_VERSION]')
 
 OE_MARKUP_PERCENTAGE = 0.05
 ANNUAL_SAVINGS_PERCENTAGE = 0.80 # 20% off
@@ -24,7 +24,6 @@ HOURS_IN_A_YEAR = 8760
 DEFAULT_REGION = 'us-east-1'
 AMI=sys.argv[1]
 VERSION=sys.argv[2]
-USE_GRAVITON=sys.argv[3]
 
 pricing = boto3.client('pricing', region_name=DEFAULT_REGION)
 
@@ -68,10 +67,10 @@ plf_config = yaml.load(
     open('/code/plf_config.yaml'),
     Loader=yaml.SafeLoader
 )
-if USE_GRAVITON:
-    allowed_instance_types = Asg.GRAVITON_INSTANCE_TYPES
-else:
+if plf_config['Architecture'] == 'x86_64':
     allowed_instance_types = Asg.STANDARD_INSTANCE_TYPES
+else:
+    allowed_instance_types = Asg.GRAVITON_INSTANCE_TYPES
 
 allowed_regions = open('/code/supported_regions.txt').read().split('\n')
 
