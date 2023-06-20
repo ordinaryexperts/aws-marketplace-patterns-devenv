@@ -106,18 +106,30 @@ def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
 
 src = 'plf.xlsx'
 now_dt = datetime.datetime.now()
-dst = f"plf-version-{VERSION.replace('.', '-')}--gen-{now_dt.strftime('%Y%m%d-%H%M%S')}.xlsx"
-SHEET_NAME = 'SSLSingleAMIAndCAR'
+PRODUCT_SLUG = plf_config.get('Product Slug', 'oe')
+dst = f"plf-{PRODUCT_SLUG}-v{VERSION.replace('.', '-')}-gen-{now_dt.strftime('%Y%m%d-%H%M%S')}.xlsx"
+SHEET_NAME_OPTIONS = ['SSLSingleAMIAndCAR', 'SSLSingleAMIAndCARWithContract']
+SHEET_NAME = None
+
+src_wb = openpyxl.load_workbook(src)
+for name in SHEET_NAME_OPTIONS:
+    if name in src_wb.sheetnames:
+        SHEET_NAME = name
+        break
+
+if SHEET_NAME is None:
+    print("Sheet not found in the source file.")
+    exit()
 
 shutil.copyfile(src, dst)
 
 dst_wb = openpyxl.load_workbook(dst)
 dst_sheet = dst_wb[SHEET_NAME]
 
-src_wb = openpyxl.load_workbook(src)
 src_sheet = src_wb[SHEET_NAME]
 headers = src_sheet[5]
-values = src_sheet[6]
+values = src_sheet[src_sheet.max_row]
+row_num = src_sheet.max_row + 1
 
 current_column_index = 0
 for header in headers:
@@ -156,11 +168,14 @@ for header in headers:
     if not availability_match and not price_match:
         if column in plf_config:
             value = pystache.render(plf_config[column], {'ami': AMI, 'version': VERSION})
-        else:
-            value = None
-    if value is not None and value != values[current_column_index].value:
-        print(f"{column} has changed! Old: '{values[current_column_index].value}' New: '{value}'")
-        dst_sheet.cell(row=6, column=current_column_index+1, value=value)
+    current_value = values[current_column_index].value
+    if current_value is None:
+        current_value = ''
+    if value != current_value:
+        print(f"{column} has changed! Old: '{current_value}' New: '{value}'")
+        dst_sheet.cell(row=row_num, column=current_column_index+1, value=value)
+    else:
+        dst_sheet.cell(row=row_num, column=current_column_index+1, value=current_value)
     current_column_index += 1
 
 dst_wb.save(dst)

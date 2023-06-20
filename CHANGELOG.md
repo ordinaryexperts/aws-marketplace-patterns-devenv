@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.3.1
+
+* plf script tweaks
+
 # 2.3.0
 
 * region related enhancements to scripts
