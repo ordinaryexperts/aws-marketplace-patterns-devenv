@@ -3,7 +3,7 @@
 cd /code
 
 if [ "$#" -ne 1 ]; then
-    VERSION=`git describe`
+    VERSION=`git config --global --add safe.directory /code && git describe --always`
 else
     VERSION=$1
     IS_RELEASE=true
