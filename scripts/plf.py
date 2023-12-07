@@ -1,6 +1,7 @@
 # plf.py
 # ----------
 #
+import argparse
 import boto3
 import datetime
 import json
@@ -14,16 +15,27 @@ import yaml
 
 from oe_patterns_cdk_common.asg import Asg
 
-if len(sys.argv) != 3:
-    raise Exception('Usage: python3 plf.py [AMI_ID] [TEMPLATE_VERSION]')
+parser = argparse.ArgumentParser(description='Process some flags and arguments.')
+
+# Optional flags
+parser.add_argument('--skip-pricing-update', action='store_true', help='Skip pricing update')
+parser.add_argument('--skip-region-update', action='store_true', help='Skip region update')
+
+# Required arguments
+parser.add_argument('AMI_ID', help='AMI ID')
+parser.add_argument('TEMPLATE_VERSION', help='Template version')
+
+args = parser.parse_args()
+skip_pricing_update = args.skip_pricing_update
+skip_region_update = args.skip_region_update
+AMI = args.AMI_ID
+VERSION = args.TEMPLATE_VERSION
 
 OE_MARKUP_PERCENTAGE = 0.05
 ANNUAL_SAVINGS_PERCENTAGE = 0.80 # 20% off
 MINIMUM_RATE = 0.01
 HOURS_IN_A_YEAR = 8760
 DEFAULT_REGION = 'us-east-1'
-AMI=sys.argv[1]
-VERSION=sys.argv[2]
 
 pricing = boto3.client('pricing', region_name=DEFAULT_REGION)
 
@@ -135,40 +147,46 @@ current_column_index = 0
 for header in headers:
     column = header.value
     value = ''
+    current_value = values[current_column_index].value
     availability_match = re.search(r'(.+) Availability', column)
     if availability_match:
-        match_keyword = availability_match.groups()[0]
-        # region or instance availability?
-        is_instance_match = re.search(r'^(.+)\.(.+)$', match_keyword)
-        if is_instance_match:
-            if match_keyword in allowed_instance_types:
-                value = 'TRUE'
-            else:
-                value = ''
+        if skip_region_update:
+            value = current_value
         else:
-            if match_keyword in allowed_regions:
-                value = 'TRUE'
+            match_keyword = availability_match.groups()[0]
+            # region or instance availability?
+            is_instance_match = re.search(r'^(.+)\.(.+)$', match_keyword)
+            if is_instance_match:
+                if match_keyword in allowed_instance_types:
+                    value = 'TRUE'
+                else:
+                    value = ''
             else:
-                value = ''
+                if match_keyword in allowed_regions:
+                    value = 'TRUE'
+                else:
+                    value = ''
 
     price_match = re.search(r'(.+) (Hourly|Annual) Price', column)
     if price_match:
-        instance_type = price_match.groups()[0]
-        if instance_type in allowed_instance_types:
-            price_type = price_match.groups()[1]
-            price = get_highest_hourly_price_for_instance_type(instance_type, allowed_regions)
-            hourly_price_with_markup = round(price * OE_MARKUP_PERCENTAGE, 2)
-            if hourly_price_with_markup < MINIMUM_RATE:
-                hourly_price_with_markup = MINIMUM_RATE
-            if price_type == 'Hourly':
-                value = '{:.3f}'.format(hourly_price_with_markup)
-            else:
-                annual_price = hourly_price_with_markup * HOURS_IN_A_YEAR * ANNUAL_SAVINGS_PERCENTAGE
-                value = '{:.3f}'.format(round(annual_price, 2))
+        if skip_pricing_update:
+            value = current_value
+        else:
+            instance_type = price_match.groups()[0]
+            if instance_type in allowed_instance_types:
+                price_type = price_match.groups()[1]
+                price = get_highest_hourly_price_for_instance_type(instance_type, allowed_regions)
+                hourly_price_with_markup = round(price * OE_MARKUP_PERCENTAGE, 2)
+                if hourly_price_with_markup < MINIMUM_RATE:
+                    hourly_price_with_markup = MINIMUM_RATE
+                if price_type == 'Hourly':
+                    value = '{:.3f}'.format(hourly_price_with_markup)
+                else:
+                    annual_price = hourly_price_with_markup * HOURS_IN_A_YEAR * ANNUAL_SAVINGS_PERCENTAGE
+                    value = '{:.3f}'.format(round(annual_price, 2))
     if not availability_match and not price_match:
         if column in plf_config:
             value = pystache.render(plf_config[column], {'ami': AMI, 'version': VERSION})
-    current_value = values[current_column_index].value
     if current_value is None:
         current_value = ''
     if value != current_value:

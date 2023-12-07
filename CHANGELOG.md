@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.3.3
+
+* Add args for --skip-pricing-update and --skip-region-update in plf.py
+
 # 2.3.2
 
 * fix git describe call in packer.sh
