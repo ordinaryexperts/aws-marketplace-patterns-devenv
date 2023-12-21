@@ -1,5 +1,10 @@
 # Unreleased
 
+# 2.3.4
+
+* error handling improvements to packer.sh
+* supported_regions.txt now is optional and has defaults
+
 # 2.3.3
 
 * Add args for --skip-pricing-update and --skip-region-update in plf.py
