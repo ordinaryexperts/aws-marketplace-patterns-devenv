@@ -1,6 +1,6 @@
 # Unreleased
 
-* Upgrade CDK to 2.12.0
+* Upgrade CDK to 2.120.0
 * Upgrade Packer to 1.10.0
 * Upgrade Taskcat to 0.9.40
 
