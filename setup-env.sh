@@ -47,5 +47,6 @@ npm install -g aws-cdk@$CDK_VERSION
 wget -q -O /tmp/packer.zip https://releases.hashicorp.com/packer/$PACKER_VERSION/packer_${PACKER_VERSION}_linux_amd64.zip
 unzip /tmp/packer.zip -d /usr/local/bin/
 rm /tmp/packer.zip
+packer plugins install github.com/hashicorp/amazon v1.2.9
 
 echo "$(date): Finished setup-env.sh"

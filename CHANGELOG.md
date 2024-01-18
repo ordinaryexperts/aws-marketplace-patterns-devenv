@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.4.1
+
+* Install packer amazon plugin
+
 # 2.4.0
 
 * Upgrade CDK to 2.120.0
