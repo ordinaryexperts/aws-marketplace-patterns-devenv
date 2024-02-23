@@ -4,7 +4,7 @@ echo "$(date): Starting setup-env.sh"
 
 export CDK_VERSION=2.120.0
 export PACKER_VERSION=1.10.0
-export TASKCAT_VERSION=0.9.40
+export TASKCAT_VERSION=0.9.41
 
 # system upgrades and tools
 export DEBIAN_FRONTEND=noninteractive
@@ -29,6 +29,9 @@ cd -
 # taskcat
 apt-get -y -q install python3 python3-pip
 pip3 install -q taskcat==$TASKCAT_VERSION
+# https://github.com/docker/docker-py/issues/3113#issuecomment-1531621678
+pip3 uninstall requests
+pip3 install requests==2.28.1
 
 # For scripts/pfl.py
 pip3 install -q \
