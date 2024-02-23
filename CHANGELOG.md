@@ -1,5 +1,10 @@
 # Unreleased
 
+# 2.4.2
+
+* Upgrade Taskcat to 0.9.41
+* Fix Taskcat / Docker issue
+
 # 2.4.1
 
 * Install packer amazon plugin
