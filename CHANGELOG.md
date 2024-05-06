@@ -1,5 +1,7 @@
 # Unreleased
 
+* Updating pricing calcs in plf.py
+
 # 2.4.2
 
 * Upgrade Taskcat to 0.9.41
