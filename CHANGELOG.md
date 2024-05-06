@@ -1,5 +1,7 @@
 # Unreleased
 
+# 2.5.0
+
 * Updating pricing calcs in plf.py
 
 # 2.4.2
