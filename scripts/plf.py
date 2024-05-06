@@ -6,6 +6,7 @@ import boto3
 import datetime
 import json
 import openpyxl
+import os
 import pystache
 import re
 import shutil
@@ -84,7 +85,12 @@ if plf_config['Architecture'] == 'x86_64':
 else:
     allowed_instance_types = Asg.GRAVITON_INSTANCE_TYPES
 
-allowed_regions = open('/code/supported_regions.txt').read().split('\n')
+supported_regions_file = '/code/supported_regions.txt'
+if not os.path.exists(supported_regions_file):
+    supported_regions_file = 'supported_regions.txt'
+
+with open(supported_regions_file) as file:
+    allowed_regions = file.read().split('\n')
 
 def get_highest_hourly_price_for_instance_type(instance_type, allowed_regions):
     highest_hourly_price = 0

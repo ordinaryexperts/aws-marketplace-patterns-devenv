@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.5.1
+
+* add default supported_regions.txt
+
 # 2.5.0
 
 * Updating pricing calcs in plf.py
