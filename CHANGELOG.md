@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.5.2
+
+* remove eu-central-2 region due to lack of AWS::SES::EmailIdentity
+
 # 2.5.1
 
 * add default supported_regions.txt
