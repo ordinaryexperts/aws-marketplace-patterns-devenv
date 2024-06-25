@@ -87,7 +87,7 @@ else:
 
 supported_regions_file = '/code/supported_regions.txt'
 if not os.path.exists(supported_regions_file):
-    supported_regions_file = 'supported_regions.txt'
+    supported_regions_file = '/scripts/supported_regions.txt'
 
 with open(supported_regions_file) as file:
     allowed_regions = file.read().split('\n')
