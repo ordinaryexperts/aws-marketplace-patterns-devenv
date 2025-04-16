@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.5.4
+
+* add publish-diagram.sh script
+
 # 2.5.3
 
 * fix path to supported_regions.txt
