@@ -40,7 +40,7 @@ pip3 install -q \
      pyyaml
 
 # more recent nodejs
-curl -sL https://deb.nodesource.com/setup_18.x | bash -
+curl -sL https://deb.nodesource.com/setup_20.x | bash -
 apt-get -y -q install nodejs
 
 # cdk
