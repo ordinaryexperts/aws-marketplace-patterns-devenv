@@ -2,7 +2,7 @@
 
 # 2.5.5
 
-* Upgrade node.js to 22
+* Upgrade node.js to 20
 
 # 2.5.4
 
