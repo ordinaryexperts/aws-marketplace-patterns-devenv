@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.5.5
+
+* Upgrade node.js to 22
+
 # 2.5.4
 
 * add publish-diagram.sh script
