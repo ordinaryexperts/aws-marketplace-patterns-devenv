@@ -1,5 +1,10 @@
 # Unreleased
 
+# 2.6.0
+
+* Add integration testing tools: pytest, playwright, boto3
+* Remove requests downgrade workaround (incompatible with taskcat 0.9.41)
+
 # 2.5.5
 
 * Upgrade node.js to 20
