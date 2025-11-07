@@ -26,6 +26,13 @@ unzip -q awscliv2.zip
 ./aws/install
 cd -
 
+# aws session manager plugin
+cd /tmp
+curl --silent --show-error "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+dpkg -i session-manager-plugin.deb
+rm session-manager-plugin.deb
+cd -
+
 # taskcat
 apt-get -y -q install python3 python3-pip
 pip3 install -q taskcat==$TASKCAT_VERSION
