@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.6.1
+
+* Add AWS Session Manager plugin for SSM session support
+
 # 2.6.0
 
 * Add integration testing tools: pytest, playwright, boto3
