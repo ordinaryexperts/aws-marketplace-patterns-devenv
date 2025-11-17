@@ -1,5 +1,10 @@
 # Unreleased
 
+# 2.7.0
+
+* Upgrade to Ubuntu 24.04
+* Add goose and aider AI tools
+
 # 2.6.1
 
 * Add AWS Session Manager plugin for SSM session support
