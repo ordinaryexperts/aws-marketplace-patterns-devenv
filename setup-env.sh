@@ -35,23 +35,26 @@ cd -
 
 # taskcat
 apt-get -y -q install python3 python3-pip
-pip3 install -q taskcat==$TASKCAT_VERSION
+pip3 install --break-system-packages -q taskcat==$TASKCAT_VERSION
 # Note: taskcat 0.9.41 requires requests>=2.31.0
 # Removed requests downgrade as it conflicts with taskcat requirements
 
 # For scripts/pfl.py
-pip3 install -q \
+pip3 install --break-system-packages -q \
      openpyxl   \
      pystache   \
      pyyaml
 
 # Integration testing tools (requests already installed above for taskcat)
-pip3 install -q \
+pip3 install --break-system-packages -q \
      pytest==7.4.3          \
      pytest-asyncio==0.21.1 \
      pytest-timeout==2.2.0  \
      playwright==1.40.0     \
-     boto3==1.34.16
+     boto3==1.34.16         \
+     aider-chat             \
+     'langfuse<3.0,>=2.60'  \
+     goose-ai
 
 # Install Playwright browsers (chromium only for smaller image)
 playwright install --with-deps chromium
