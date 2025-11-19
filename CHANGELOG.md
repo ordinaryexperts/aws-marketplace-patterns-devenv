@@ -1,5 +1,7 @@
 # Unreleased
 
+# 2.8.0
+
 * Upgrade CDK to 2.225.0 (was 2.120.0)
 * Upgrade TaskCat to 0.9.57 (was 0.9.41)
 * Upgrade packer to 1.14.3 (was 1.10.0)
