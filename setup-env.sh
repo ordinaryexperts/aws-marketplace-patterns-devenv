@@ -2,9 +2,10 @@
 
 echo "$(date): Starting setup-env.sh"
 
-export CDK_VERSION=2.120.0
-export PACKER_VERSION=1.10.0
-export TASKCAT_VERSION=0.9.41
+export CDK_CLI_VERSION=2.1032.0
+export CDK_LIB_VERSION=2.225.0
+export PACKER_VERSION=1.14.3
+export TASKCAT_VERSION=0.9.57
 
 # system upgrades and tools
 export DEBIAN_FRONTEND=noninteractive
@@ -64,7 +65,8 @@ curl -sL https://deb.nodesource.com/setup_20.x | bash -
 apt-get -y -q install nodejs
 
 # cdk
-npm install -g aws-cdk@$CDK_VERSION
+npm install -g aws-cdk-lib@$CDK_LIB_VERSION
+npm install -g aws-cdk@$CDK_CLI_VERSION
 
 # packer
 wget -q -O /tmp/packer.zip https://releases.hashicorp.com/packer/$PACKER_VERSION/packer_${PACKER_VERSION}_linux_amd64.zip
