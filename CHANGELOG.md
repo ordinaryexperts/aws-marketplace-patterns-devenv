@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.8.1
+
+* Adding script to manage new AWS Marketplace versions
+
 # 2.8.0
 
 * Upgrade CDK to 2.225.0 (was 2.120.0)
