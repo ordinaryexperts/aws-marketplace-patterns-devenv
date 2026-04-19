@@ -96,7 +96,7 @@ def cmd_validate(args):
         "Title": details.get("Description", {}).get("ProductTitle"),
         "Short description": details.get("Description", {}).get("ShortDescription"),
         "Long description": details.get("Description", {}).get("LongDescription"),
-        "Logo URL": details.get("Description", {}).get("LogoUrl"),
+        "Logo URL": details.get("PromotionalResources", {}).get("LogoUrl"),
         "Highlights": details.get("Description", {}).get("Highlights", []),
         "Support description": details.get("SupportInformation", {}).get("Description"),
     }
