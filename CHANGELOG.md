@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.8.2
+
+* Fix marketplace.py validate to read LogoUrl from PromotionalResources (was incorrectly checking Description)
+
 # 2.8.1
 
 * Adding script to manage new AWS Marketplace versions
