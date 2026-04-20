@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.8.3
+
+* publish-template.sh and publish-diagram.sh now honor `template_bucket` and `template_pattern` from `marketplace_config.yaml` (falling back to hardcoded defaults when the file is absent). Previously the bucket was always hardcoded, which was inconsistent with marketplace.py reading the same config.
+
 # 2.8.2
 
 * Fix marketplace.py validate to read LogoUrl from PromotionalResources (was incorrectly checking Description)
