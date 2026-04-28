@@ -1,5 +1,13 @@
 # Unreleased
 
+# 2.8.4
+
+* Fix `setup-env.sh`: integration testing tools (`pytest`, `playwright`, `boto3`, ...) were not actually being installed in the `:2.8.3` image, even though they appear in setup-env.sh. Two bugs combined:
+  - `goose-ai` has no Python 3.12 release (all versions pin `<3.12`), so on Ubuntu 24.04 the bulk pip install fails atomically — none of the packages in the batch get installed, including `pytest`, `playwright`, `boto3`. Split the install: required test tools first, then optional AI dev tools (`aider-chat`, `langfuse`, `goose-ai`) in separate best-effort calls so a single failure doesn't block the batch.
+  - `playwright install --with-deps chromium` then silently fails too because `--with-deps` tries to install `libasound2`, which was renamed to `libasound2t64` in Ubuntu 24.04. Now we apt-install the chromium runtime deps explicitly (with the correct `libasound2t64` name) and then run `playwright install chromium` without `--with-deps`.
+
+  Net effect: `:2.8.4+` images will actually have a working playwright + chromium, enabling `make test-integration-ui` in pattern repos to run UI tests in the container instead of requiring a host playwright install.
+
 # 2.8.3
 
 * publish-template.sh and publish-diagram.sh now honor `template_bucket` and `template_pattern` from `marketplace_config.yaml` (falling back to hardcoded defaults when the file is absent). Previously the bucket was always hardcoded, which was inconsistent with marketplace.py reading the same config.
