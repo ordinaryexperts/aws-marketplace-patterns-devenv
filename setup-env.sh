@@ -46,19 +46,38 @@ pip3 install --break-system-packages -q \
      pystache   \
      pyyaml
 
-# Integration testing tools (requests already installed above for taskcat)
+# Integration testing tools (requests already installed above for taskcat).
+# Kept separate from optional AI dev tools below because pip install is
+# atomic per invocation — if a single dep fails to resolve, none of the
+# packages in the batch get installed.
 pip3 install --break-system-packages -q \
      pytest==7.4.3          \
      pytest-asyncio==0.21.1 \
      pytest-timeout==2.2.0  \
      playwright==1.40.0     \
-     boto3==1.34.16         \
+     boto3==1.34.16
+
+# Optional AI dev tools — best-effort. goose-ai has no Python 3.12 release
+# (all versions pin <3.12) so it will fail on Ubuntu 24.04, but we don't
+# want that to block the test infrastructure or other tools above.
+pip3 install --break-system-packages -q \
      aider-chat             \
      'langfuse<3.0,>=2.60'  \
-     goose-ai
+     || echo "WARN: optional AI dev tools install failed (non-blocking)"
+pip3 install --break-system-packages -q goose-ai \
+     || echo "WARN: goose-ai install failed (no Python 3.12 release; non-blocking)"
 
-# Install Playwright browsers (chromium only for smaller image)
-playwright install --with-deps chromium
+# Install Playwright browsers (chromium only for smaller image).
+# Note: cannot use `playwright install --with-deps chromium` on Ubuntu 24.04 —
+# it tries to install `libasound2` which was renamed to `libasound2t64` in
+# 24.04, causing the install to fail silently (exit 100) and leaving the
+# image without chromium. Install the system deps explicitly first, then
+# fetch the browser binary without --with-deps.
+apt-get -y -q install --no-install-recommends \
+    libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libdrm2 \
+    libxkbcommon0 libatspi2.0-0 libxcomposite1 libxdamage1 \
+    libxfixes3 libxrandr2 libgbm1 libasound2t64
+playwright install chromium
 
 # more recent nodejs
 curl -sL https://deb.nodesource.com/setup_20.x | bash -
