@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.8.5
+
+* Bundle `marketplace_rebrand.py`, `marketplace_rebrand_lib.py`, `marketplace_reprice.py`, and `marketplace_reprice_lib.py` from `aws-marketplace-utilities` into `/scripts` so pattern repos can run `make marketplace-rebrand` / `make marketplace-reprice` without mounting the utilities scripts dir into the container. Synced from utilities `1.10.0`.
+
 # 2.8.4
 
 * Fix `setup-env.sh`: integration testing tools (`pytest`, `playwright`, `boto3`, ...) were not actually being installed in the `:2.8.3` image, even though they appear in setup-env.sh. Two bugs combined:
