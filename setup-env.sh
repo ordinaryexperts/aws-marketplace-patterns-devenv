@@ -80,7 +80,9 @@ apt-get -y -q install --no-install-recommends \
 playwright install chromium
 
 # more recent nodejs
-curl -sL https://deb.nodesource.com/setup_20.x | bash -
+# Node 22 is the current LTS (EOL 2027-04-30). Node 20 went EOL on 2026-04-30
+# and JSII (used by the CDK CLI) emits an end-of-life warning on every invocation.
+curl -sL https://deb.nodesource.com/setup_22.x | bash -
 apt-get -y -q install nodejs
 
 # cdk
