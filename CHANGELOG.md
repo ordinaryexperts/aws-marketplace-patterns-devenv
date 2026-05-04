@@ -1,5 +1,9 @@
 # Unreleased
 
+# 2.8.6
+
+* Bump bundled Node.js from 20 → 22 (LTS, EOL 2027-04-30). Node 20 reached EOL on 2026-04-30 and JSII emits an end-of-life warning banner on every CDK invocation in pattern repos. Node 22 is officially supported by JSII / aws-cdk-lib.
+
 # 2.8.5
 
 * Bundle `marketplace_rebrand.py`, `marketplace_rebrand_lib.py`, `marketplace_reprice.py`, and `marketplace_reprice_lib.py` from `aws-marketplace-utilities` into `/scripts` so pattern repos can run `make marketplace-rebrand` / `make marketplace-reprice` without mounting the utilities scripts dir into the container. Synced from utilities `1.10.0`.
